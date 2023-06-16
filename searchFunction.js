@@ -236,6 +236,10 @@ function FilterListItem(t) {
         ct.onChange = function () {
           this.update();
         }.bind(this);
+        
+        // Add the category you want to always show to the filterObjects
+        this.filterObjects['XX'] = new FilterObject("equal", 'XX', null);
+
     },
     prevPage: function () {
       this.page > 0 && this.update(this.page - 1);
@@ -260,6 +264,7 @@ function FilterListItem(t) {
       for (flt in ((filter = []), this.filterObjects))
         (tempFilter = this.filterObjects[flt].getFilter()),
           null != tempFilter && filter.push(tempFilter);
+    
       if (
         (console.log(filter),
         0 == filter.length
@@ -271,44 +276,54 @@ function FilterListItem(t) {
         (e = this.orderby !== orderby),
         (this.orderby = orderby),
         JSON.stringify(filter) !== JSON.stringify(this.currentFilter) || e)
-      )
-        (this.page = 0),
-          (this.currentFilter = filter),
-          (displayList = this.itemList.filter(
-            function (t) {
-              return t.filter(this.currentFilter);
-            }.bind(this)
-          ));
-      else {
+      ) {
+        this.page = 0;
+        this.currentFilter = filter;
+    
+        let displayList = this.itemList.filter(function (t) {
+          return t.filter(this.currentFilter);
+        }.bind(this));
+    
+        // Add the following lines of code here
+        if (!displayList.some(item => item.filterObjects['XX'].getValue())) {
+          const categoryFilter = this.filterObjects['XX'];
+          categoryFilter.setValue(true);
+          this.currentFilter.push(categoryFilter.getFilter());
+          displayList = this.itemList.filter(function (t) {
+            return t.filter(this.currentFilter);
+          }.bind(this));
+        }
+        // End of added code
+    
+        displayList.sort(function (t, e) {
+          return t.data[this.orderby] < e.data[this.orderby] ? -1 : 1;
+        }.bind(this));
+    
+        console.log(displayList);
+    
+        this.maxPage = Math.max(Math.floor((displayList.length - 1) / this.perPage), 0);
+        this.container.html("");
+    
+        if (displayList.length === 0) {
+          this.container.append(this.emptyState.clone(!0, !0));
+        }
+    
+        for (item of displayList.slice(this.page * this.perPage, (this.page + 1) * this.perPage)) {
+          item.append(this.container);
+        }
+      } else {
         if (t == this.page) return void this.updatePageIndicator();
-        (this.page = t),
-          (displayList = this.itemList.filter(
-            function (t) {
-              return t.filter(this.currentFilter);
-            }.bind(this)
-          ));
+        this.page = t;
+        displayList = this.itemList.filter(function (t) {
+          return t.filter(this.currentFilter);
+        }.bind(this));
       }
-      for (item of (displayList.sort(function (t, e) {
-        return (
-          console.log(t.data[this.orderby], this.orderby),
-          t.data[this.orderby] < e.data[this.orderby] ? -1 : 1
-        );
-      }),
-      console.log(displayList),
-      (this.maxPage = Math.max(
-        Math.floor((displayList.length - 1) / this.perPage),
-        0
-      )),
-      this.container.html(""),
-      0 == displayList.length &&
-        this.container.append(this.emptyState.clone(!0, !0)),
-      displayList.slice(
-        this.page * this.perPage,
-        (this.page + 1) * this.perPage
-      )))
-        item.append(this.container);
-      this.updatePageIndicator(), this.onUpdate();
+    
+      this.updatePageIndicator();
+      this.onUpdate();
     },
+    
+    
   }),
   (FilterListItem.prototype = {
     constructor: FilterListItem,
