@@ -188,14 +188,11 @@ function FilterListItem(t) {
         //if XX not present in array; push XX to array
         
         const globalValueNotPresent = !e.some(obj => obj.value === 'XX');
-         if(globalValueNotPresent){
+         if(globalValueNotPresent && t.length > 0){
           e.push({ type: 'equal', key: 'country', value: 'XX' });  
        }
-        // console.log(e)
         
-        var test = [];
-        test.push({ type: 'equal', key: 'country', value: 'XX' });
-        console.log(test)
+
 
         return 0 == e.length ? null : { type: "group", items: e };
       }
@@ -363,27 +360,27 @@ function FilterListItem(t) {
       return t in this.data ? this.data[t] : Number.MAX_SAFE_INTEGER;
     },
 
-    sortHelper: function (t, e) {
-      const tHasXX = this.data['country'] === 'XX';
-      const eHasXX = e.data['country'] === 'XX';
-  
-      // Compare countries with 'XX' against others
-      if (tHasXX && !eHasXX) return 1;
-      if (!tHasXX && eHasXX) return -1;
-  
-      // For countries without 'XX', use default sorting
-      for (const property in this.data) {
-        if (t.data[property] !== e.data[property]) {
-          return this.getOrderIndex(t) - this.getOrderIndex(e);
-        }
-      }
-  
-      return 0;
-    },
-
     // sortHelper: function (t, e) {
-    //   return this.getOrderIndex(e) - t.getOrderIndex(e);
+    //   const tHasXX = this.data['country'] === 'XX';
+    //   const eHasXX = e.data['country'] === 'XX';
+  
+    //   // Compare countries with 'XX' against others
+    //   if (tHasXX && !eHasXX) return 1;
+    //   if (!tHasXX && eHasXX) return -1;
+  
+    //   // For countries without 'XX', use default sorting
+    //   for (const property in this.data) {
+    //     if (t.data[property] !== e.data[property]) {
+    //       return this.getOrderIndex(t) - this.getOrderIndex(e);
+    //     }
+    //   }
+  
+    //   return 0;
     // },
+
+    sortHelper: function (t, e) {
+      return this.getOrderIndex(e) - t.getOrderIndex(e);
+    },
     append: function (t) {
       t.append(this.template);
     },
