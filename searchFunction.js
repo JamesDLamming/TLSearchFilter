@@ -153,12 +153,15 @@ function FilterListItem(t) {
   (FilterControllerCategory.prototype = {
     constructor: FilterControllerCategory,
     getValue: function () {
-      for (k in ((values = []), this.controller))
-        this.controller[k][0].getValue() && values.push(k);
-        if (!values.includes("XX")) {
-          values.push("XX");
+      values = [];
+      for (k in this.controller)
+        if (this.controller[k][0].getValue()) {
+          values.push(k);
         }
-      console.log(values)
+      if (!values.includes("XX")) {
+        values.push("XX");
+      }
+      console.log(values);
       return values;
     },
     setValue: function (t) {
