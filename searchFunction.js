@@ -192,7 +192,10 @@ function FilterListItem(t) {
           
         // }
         // console.log(e)
-
+        
+        var test = [];
+        test.push({ type: 'equal', key: 'country', value: 'XX' });
+        console.log(test)
 
         return 0 == e.length ? null : { type: "group", items: e };
       }
