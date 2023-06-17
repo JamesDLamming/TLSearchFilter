@@ -183,7 +183,7 @@ function FilterListItem(t) {
         var e = [];
         
         for (val of t) e.push({ type: this.type, key: this.key, value: val });
-        e.push({ type: this.type, key: this.key, value: "XX" });
+        e.push({ type: 'equal', key: 'country', value: 'XX' });
 
         //if XX not present in array; push XX to array
         // console.log(e)
