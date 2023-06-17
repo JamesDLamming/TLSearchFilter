@@ -155,8 +155,8 @@ function FilterListItem(t) {
     getValue: function () {
       for (k in ((values = []), this.controller))
         this.controller[k][0].getValue() && values.push(k);
-        if (!values.includes('XX')) {
-          values.push('XX');
+        if (!values.includes("XX")) {
+          values.push("XX");
         }
       console.log(values)
       return values;
