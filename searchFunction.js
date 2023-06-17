@@ -181,13 +181,17 @@ function FilterListItem(t) {
       var t = this.controller.getValue();
       if (Array.isArray(t)) {
         var e = [];
+        
         for (val of t) e.push({ type: this.type, key: this.key, value: val });
-        //if XX not present in array; push XX to array
+        e.push({ type: this.type, key: this.key, value: "XX" });
 
-        const globalValueNotPresent = !e.some(obj => obj.value === 'XX');
-        if(globalValueNotPresent){
-          e.push({ type: this.type, key: this.key, value: "XX" });
-        }
+        //if XX not present in array; push XX to array
+        // console.log(e)
+        // const globalValueNotPresent = !e.some(obj => obj.value === 'XX');
+        // if(globalValueNotPresent){
+          
+        // }
+        // console.log(e)
 
 
         return 0 == e.length ? null : { type: "group", items: e };
