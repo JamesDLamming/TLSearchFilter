@@ -158,10 +158,8 @@ function FilterListItem(t) {
         if (this.controller[k][0].getValue()) {
           values.push(k);
         }
-      if (!values.includes("XX")) {
-        values.push("XX");
-      }
-      console.log("test");
+
+      
       return values;
     },
     setValue: function (t) {
@@ -184,6 +182,14 @@ function FilterListItem(t) {
       if (Array.isArray(t)) {
         var e = [];
         for (val of t) e.push({ type: this.type, key: this.key, value: val });
+        //if XX not present in array; push XX to array
+
+        const globalValueNotPresent = !e.some(obj => obj.value === 'XX');
+        if(globalValueNotPresent){
+          e.push({ type: this.type, key: this.key, value: "XX" });
+        }
+
+
         return 0 == e.length ? null : { type: "group", items: e };
       }
       return null == t ? null : { type: this.type, key: this.key, value: t };
@@ -301,6 +307,7 @@ function FilterListItem(t) {
           t.data[this.orderby] < e.data[this.orderby] ? -1 : 1
         );
       }),
+      console.log("displayList"),
       console.log(displayList),
       (this.maxPage = Math.max(
         Math.floor((displayList.length - 1) / this.perPage),
