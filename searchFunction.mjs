@@ -362,9 +362,28 @@ function FilterListItem(t) {
     getOrderIndex: function (t) {
       return t in this.data ? this.data[t] : Number.MAX_SAFE_INTEGER;
     },
+
     sortHelper: function (t, e) {
-      return this.getOrderIndex(e) - t.getOrderIndex(e);
+      const tHasXX = this.data['country'] === 'XX';
+      const eHasXX = e.data['country'] === 'XX';
+  
+      // Compare countries with 'XX' against others
+      if (tHasXX && !eHasXX) return 1;
+      if (!tHasXX && eHasXX) return -1;
+  
+      // For countries without 'XX', use default sorting
+      for (const property in this.data) {
+        if (t.data[property] !== e.data[property]) {
+          return this.getOrderIndex(t) - this.getOrderIndex(e);
+        }
+      }
+  
+      return 0;
     },
+
+    // sortHelper: function (t, e) {
+    //   return this.getOrderIndex(e) - t.getOrderIndex(e);
+    // },
     append: function (t) {
       t.append(this.template);
     },
