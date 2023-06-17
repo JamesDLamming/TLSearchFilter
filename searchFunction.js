@@ -161,7 +161,7 @@ function FilterListItem(t) {
       if (!values.includes("XX")) {
         values.push("XX");
       }
-      console.log(values);
+      console.log("test");
       return values;
     },
     setValue: function (t) {
