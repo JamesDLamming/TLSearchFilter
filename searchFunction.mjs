@@ -159,6 +159,7 @@ function FilterListItem(t) {
           values.push(k);
         }
 
+      
       return values;
     },
     setValue: function (t) {
@@ -180,15 +181,18 @@ function FilterListItem(t) {
       var t = this.controller.getValue();
       if (Array.isArray(t)) {
         var e = [];
-
+        
         for (val of t) e.push({ type: this.type, key: this.key, value: val });
+        
 
         //if XX not present in array; push XX to array
+        
+        const globalValueNotPresent = !e.some(obj => obj.value === 'XX');
+         if(globalValueNotPresent && t.length > 0){
+          e.push({ type: 'equal', key: 'country', value: 'XX' });  
+       }
+        
 
-        const globalValueNotPresent = !e.some((obj) => obj.value === "XX");
-        if (globalValueNotPresent && t.length > 0) {
-          e.push({ type: "equal", key: "country", value: "XX" });
-        }
 
         return 0 == e.length ? null : { type: "group", items: e };
       }
@@ -301,7 +305,6 @@ function FilterListItem(t) {
             }.bind(this)
           ));
       }
-      // Hide the 'no-integrations-message' div when items are found
       for (item of (displayList.sort(function (t, e) {
         return (
           console.log(t.data[this.orderby], this.orderby),
@@ -315,17 +318,12 @@ function FilterListItem(t) {
       )),
       this.container.html(""),
       0 == displayList.length &&
-        (this.container.append(this.emptyState.clone(!0, !0)),
-        $(".no-integrations-message").show()), // Show the 'no-integrations-message' div
+        this.container.append(this.emptyState.clone(!0, !0)),
       displayList.slice(
         this.page * this.perPage,
         (this.page + 1) * this.perPage
       )))
-        if (displayList.length > 0) {
-          $(".no-integrations-message").hide();
-        }
-
-      item.append(this.container);
+        item.append(this.container);
       this.updatePageIndicator(), this.onUpdate();
     },
   }),
@@ -364,18 +362,18 @@ function FilterListItem(t) {
     // sortHelper: function (t, e) {
     //   const tHasXX = this.data['country'] === 'XX';
     //   const eHasXX = e.data['country'] === 'XX';
-
+  
     //   // Compare countries with 'XX' against others
     //   if (tHasXX && !eHasXX) return 1;
     //   if (!tHasXX && eHasXX) return -1;
-
+  
     //   // For countries without 'XX', use default sorting
     //   for (const property in this.data) {
     //     if (t.data[property] !== e.data[property]) {
     //       return this.getOrderIndex(t) - this.getOrderIndex(e);
     //     }
     //   }
-
+  
     //   return 0;
     // },
 
