@@ -1,3 +1,6 @@
+console.log("Hello, world!");
+
+
 function FilterControllerSearch(t) {
   (this.element = t),
     this.element.on(
