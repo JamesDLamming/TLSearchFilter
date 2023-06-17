@@ -1,6 +1,3 @@
-console.log("Hello, world!");
-
-
 function FilterControllerSearch(t) {
   (this.element = t),
     this.element.on(
@@ -186,14 +183,14 @@ function FilterListItem(t) {
         var e = [];
         
         for (val of t) e.push({ type: this.type, key: this.key, value: val });
-        e.push({ type: 'equal', key: 'country', value: 'XX' });
+        
 
         //if XX not present in array; push XX to array
-        // console.log(e)
-        // const globalValueNotPresent = !e.some(obj => obj.value === 'XX');
-        // if(globalValueNotPresent){
-          
-        // }
+        
+        const globalValueNotPresent = !e.some(obj => obj.value === 'XX');
+         if(globalValueNotPresent){
+          e.push({ type: 'equal', key: 'country', value: 'XX' });  
+       }
         // console.log(e)
         
         var test = [];
@@ -379,4 +376,3 @@ function FilterListItem(t) {
         new FilterList($(e));
       });
   });
-Apollo;
